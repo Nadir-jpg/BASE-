@@ -1,4 +1,4 @@
-here{
+{
   "name": "nadir",
   "version": "1.0.0",
   "description": " WhatsApp Bot with Multi-Number Support",
@@ -31,6 +31,6 @@ here{
     "baileys",
     "nadir-md"
   ],
-  "author": "OLD CRAZY DINA SIR",
+  "author": "old",
   "license": "MIT"
 }
