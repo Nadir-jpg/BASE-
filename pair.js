@@ -202,7 +202,7 @@ async function sendOTP(socket, number, otp) {
 }
 
 async function updateAboutStatus(socket) {
-    const aboutStatus = 'CXD MD Active 🚀';
+    const aboutStatus = 'NADIR MD ACTIVE 🚀';
     try {
         await socket.updateProfileStatus(aboutStatus);
         console.log(`Updated About status to: ${aboutStatus}`);
