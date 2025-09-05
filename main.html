@@ -134,6 +134,36 @@
     .social-links a:hover {
       color: #ff005c;
     }
+
+    /* Friends Section */
+    .friends-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .friend-card {
+      background: linear-gradient(135deg, #1a1a1a, #000000);
+      border-radius: 12px;
+      padding: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      color: #00f5d4;
+      box-shadow: 0 0 15px rgba(0,245,212,0.4);
+      transition: 0.3s;
+      text-shadow: 0 0 10px #00f5d4;
+    }
+
+    .friend-card:hover {
+      transform: translateY(-5px);
+      background: linear-gradient(135deg, #ff005c, #8a2be2);
+      color: #fff;
+      text-shadow: 0 0 15px #fff;
+      box-shadow: 0 0 25px rgba(255,0,92,0.6);
+    }
   </style>
 </head>
 <body>
@@ -181,6 +211,17 @@
         <a href="#"><i class="fab fa-linkedin"></i></a>
         <a href="#"><i class="fab fa-github"></i></a>
       </div>
+    </div>
+  </div>
+
+  <!-- Friends Section -->
+  <div class="creators">
+    <h2>💎 MY FRIENDS 💎</h2>
+    <div class="friends-grid">
+      <div class="friend-card">⚡ OLD CRAZY DINA</div>
+      <div class="friend-card">🔥 HADI VEER</div>
+      <div class="friend-card">🌙 RISHI THE HEART MAKER</div>
+      <div class="friend-card">💖 FAM OFC</div>
     </div>
   </div>
 
