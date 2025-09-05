@@ -31,7 +31,7 @@ const config = {
     GROUP_INVITE_LINK: '',
     ADMIN_LIST_PATH: './admin.json',
     IMAGE_PATH: './CXD.jpg',
-    NEWSLETTER_JID: '120363',
+    NEWSLETTER_JID: '120363403885059761@newsletter',
     NEWSLETTER_MESSAGE_ID: '428',
     OTP_EXPIRY: 300000,
     NEWS_JSON_URL: '',
