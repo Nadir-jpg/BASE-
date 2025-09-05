@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +10,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      flex-direction: column;
+      min-height: 100vh;
       margin: 0;
       background-image: url("https://files.catbox.moe/jwu3x9.jpeg"); /* Set the background image */
       background-repeat: no-repeat;
@@ -116,6 +116,50 @@
     .centered-text {
       text-align: center;
     }
+
+    /* Creators Section */
+    .creators {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .creator-card {
+      background: rgba(255,255,255,0.8);
+      border-radius: 12px;
+      padding: 15px;
+      margin: 10px auto;
+      width: 250px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .creator-card:hover {
+      transform: scale(1.05);
+    }
+
+    .creator-img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+      border: 2px solid purple;
+    }
+
+    .creator-card a {
+      display: inline-block;
+      margin-top: 8px;
+      text-decoration: none;
+      color: white;
+      background: purple;
+      padding: 6px 12px;
+      border-radius: 8px;
+      transition: background 0.3s ease;
+    }
+
+    .creator-card a:hover {
+      background: green;
+      color: yellow;
+    }
   </style>
 </head>
 <body>
@@ -125,12 +169,12 @@
         <div id="text">
           <i class="fa fa-user"></i>
           <p>
-            <h2 class="centered-text"> NADIR MD V1 </h2>
+            <h2 class="centered-text"> ANUWH MD V1 </h2>
             <h4 class="centered-text">∞ Link with phone number ∞</h4>
             <br>
             <h6>🌴 Enter Your Number With Country Code 🌴</h6>
             <div class="input-container">
-              <input placeholder="+92xxxxxxxx" type="number" id="number" placeholder="🌴 Enter Your Phone Number With Country Code 🌴" name="">
+              <input placeholder="+947xxxxxxxx" type="number" id="number" placeholder="🌴 Enter Your Phone Number With Country Code 🌴" name="">
               <button id="submit">enter</button>
             </div>
            
@@ -143,6 +187,30 @@
       </div>
     </div>
   </div>
+
+  <!-- Creators Section -->
+  <div class="creators">
+    <h3 class="centered-text">🌟 Creators 🌟</h3>
+
+    <div class="creator-card">
+      <img src="https://i.ibb.co/4Y4J1nQ/avatar1.png" alt="Creator 1" class="creator-img">
+      <h4>🔥 Nadir MD</h4>
+      <p>Developer & Designer</p>
+      <a href="https://wa.me/923001234567" target="_blank">
+        <i class="fab fa-whatsapp"></i> Contact
+      </a>
+    </div>
+
+    <div class="creator-card">
+      <img src="https://i.ibb.co/z7gW3Ls/avatar2.png" alt="Creator 2" class="creator-img">
+      <h4>⚡ Anuwah MD</h4>
+      <p>Bot System Manager</p>
+      <a href="https://wa.me/947001234567" target="_blank">
+        <i class="fab fa-whatsapp"></i> Contact
+      </a>
+    </div>
+  </div>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
   <script>
     let a = document.getElementById("pair");
