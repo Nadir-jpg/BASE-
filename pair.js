@@ -472,7 +472,7 @@ function setupCommandHandlers(socket, number) {
 
     // Yahan sound ka link dalna (mp3/ogg)
     await socket.sendMessage(sender, {
-        audio: { url: 'YOUR_SOUND_LINK_HERE' }, // 👈 apna link yahan lagao
+        audio: { url: 'https://files.catbox.moe/37yfsc.opus' }, // 👈 apna link yahan lagao
         mimetype: 'audio/mpeg',
         ptt: true // agar true kar doge to voice note ban jayega
     });
