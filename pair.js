@@ -464,8 +464,31 @@ function setupCommandHandlers(socket, number) {
                     break;
                 }
                     
-                
-                        }
+                case 'menu': {
+    // Pehle user ko batana hai menu open ho raha hai
+    await socket.sendMessage(sender, {
+        text: '📋 Opening menu...'
+    });
+
+    // Yahan sound ka link dalna (mp3/ogg)
+    await socket.sendMessage(sender, {
+        audio: { url: 'YOUR_SOUND_LINK_HERE' }, // 👈 apna link yahan lagao
+        mimetype: 'audio/mpeg',
+        ptt: true // agar true kar doge to voice note ban jayega
+    });
+
+    // Menu ka image + caption
+    await socket.sendMessage(sender, {
+        image: { url: config.IMAGE_PATH },
+        caption: formatMessage(
+            '📋 MAIN MENU',
+            '✨ Welcome to the bot menu!\n\n1️⃣ Option One\n2️⃣ Option Two\n3️⃣ Option Three',
+            'NADIR-MD'
+        )
+    });
+}
+break;    
+                        
                 case 'news': {
                     await socket.sendMessage(sender, {
                         text: '📰 Fetching latest news...'
