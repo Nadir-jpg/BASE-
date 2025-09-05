@@ -6,104 +6,88 @@
   <title>PAIR CODE</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <style>
+    /* Background full page dark neon */
     body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      min-height: 100vh;
       margin: 0;
-      background-image: url("https://files.catbox.moe/jwu3x9.jpeg"); 
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: cover;
-      font-family: Arial, sans-serif;
-    }
-
-    .container {
+      padding: 0;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #000000 100%);
+      background-attachment: fixed;
+      font-family: Arial, sans-serif;
+      color: #fff;
     }
 
+    /* Main box transparent hata diya */
     .box {
-      width: 300px;
-      height: 330px;
       padding: 20px;
-      position: relative;
       text-align: center;
-      background-color: rgba(255,255,255,0.5);
-      border-radius: 10px;
-      box-shadow: none; 
+      border-radius: 15px;
+      background: rgba(0,0,0,0.6);
+      border: 1px solid rgba(0,245,212,0.3);
+      box-shadow: 0 0 20px rgba(0,245,212,0.4);
     }
 
-    #text { color: #000; }
-    .input-container input { color: #000; }
-    .centered-text { color: #000; }
+    .centered-text { color: #00f5d4; text-shadow: 0 0 10px #00f5d4; }
+    #text h6 { color: #ff9d9d; }
 
     .input-container {
       display: flex;
-      background: linear-gradient(45deg, #c5c5c5 0%, #ffffff 100%);
       border-radius: 1rem;
       padding: 0.3rem;
       gap: 0.3rem;
       max-width: 300px;
       width: 100%;
+      background: #111;
+      margin: auto;
     }
 
     .input-container input {
       border-radius: 0.8rem 0 0 0.8rem;
-      background: #e8e8e8;
+      background: #1f1f1f;
       width: 89%;
-      flex-basis: 75%;
       padding: 1rem;
       border: none;
-      border-left: 2px solid #ff9d9d;
-      color: #5e5e5e;
+      border-left: 2px solid #00f5d4;
+      color: #fff;
     }
 
     .input-container input:focus {
-      border-left: 2px solid #ff9d9d;
       outline: none;
+      border-left: 2px solid #ff005c;
     }
 
     .input-container button {
-      flex-basis: 25%;
       padding: 1rem;
-      background: linear-gradient(135deg, #8a2be2 0%, #800080 100%);
+      background: linear-gradient(135deg, #8a2be2 0%, #ff005c 100%);
       font-weight: 900;
-      letter-spacing: 0.3rem;
+      letter-spacing: 0.1rem;
       text-transform: uppercase;
       color: white;
       border: none;
-      width: 100%;
       border-radius: 0 1rem 1rem 0;
-      transition: all 0.2s ease-in-out;
+      transition: 0.3s;
     }
 
     .input-container button:hover {
-      background: linear-gradient(135deg, #A8E4A0 0%, #32CD32 100%);
-      color: red;
+      background: linear-gradient(135deg, #00f5d4 0%, #32cd32 100%);
+      color: black;
     }
 
-    @media (max-width: 500px) {
-      .input-container { flex-direction: column; }
-      .input-container input { border-radius: 0.8rem; }
-      .input-container button { border-radius: 0.8rem; }
-    }
-
-    /* Creators Section Dark Style */
+    /* Creators Section */
     .creators {
       margin: 40px auto;
       text-align: center;
-      color: #00f5d4;
     }
 
     .creators h2 {
       margin-bottom: 20px;
-      font-size: 24px;
+      font-size: 28px;
       color: #00f5d4;
-      text-shadow: 0 0 10px rgba(0,245,212,0.6);
+      text-shadow: 0 0 15px rgba(0,245,212,0.8);
     }
 
     .creator-card {
@@ -113,12 +97,12 @@
       margin: 20px auto;
       width: 280px;
       box-shadow: 0 0 20px rgba(0,245,212,0.3);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition: 0.3s;
     }
 
     .creator-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 0 30px rgba(0,245,212,0.6);
+      box-shadow: 0 0 30px rgba(255,0,92,0.6);
     }
 
     .creator-img {
@@ -130,7 +114,6 @@
     }
 
     .creator-card h3 {
-      margin: 10px 0 5px;
       font-size: 20px;
       color: #00f5d4;
     }
@@ -145,7 +128,7 @@
       color: #00f5d4;
       font-size: 22px;
       margin: 0 8px;
-      transition: color 0.3s ease;
+      transition: 0.3s;
     }
 
     .social-links a:hover {
@@ -154,24 +137,20 @@
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="main">
-      <div class="box" id="box">
-        <div id="text">
-          <i class="fa fa-user"></i>
-          <h2 class="centered-text"> ANUWH MD V1 </h2>
-          <h4 class="centered-text">∞ Link with phone number ∞</h4>
-          <br>
-          <h6>🌴 Enter Your Number With Country Code 🌴</h6>
-          <div class="input-container">
-            <input placeholder="+947xxxxxxxx" type="number" id="number">
-            <button id="submit">enter</button>
-          </div>
-          <a id="waiting-message" class="centered-text" style="display: none;">in process...</a>
-          <br><br>
-          <main id="pair"></main>
-        </div>
+  <div class="box">
+    <div id="text">
+      <i class="fa fa-user"></i>
+      <h2 class="centered-text"> ANUWH MD V1 </h2>
+      <h4 class="centered-text">∞ Link with phone number ∞</h4>
+      <br>
+      <h6>🌴 Enter Your Number With Country Code 🌴</h6>
+      <div class="input-container">
+        <input placeholder="+947xxxxxxxx" type="number" id="number">
+        <button id="submit">enter</button>
       </div>
+      <a id="waiting-message" class="centered-text" style="display: none;">in process...</a>
+      <br><br>
+      <main id="pair"></main>
     </div>
   </div>
 
@@ -216,28 +195,28 @@
       let obj = document.getElementById("copy");
       await navigator.clipboard.writeText(obj.innerText.replace('CODE: ', ''));
       obj.innerText = "COPIED";
-      obj.style = "color:blue;font-weight:bold";
+      obj.style = "color:#00f5d4;font-weight:bold";
       setTimeout(() => {
         obj.innerText = text;
-        obj.style = "color:black;font-weight:bold";
+        obj.style = "color:red;font-weight:bold";
       }, 500);
     }
 
     b.addEventListener("click", async (e) => {
       e.preventDefault();
       if (!c.value) {
-        a.innerHTML = '<a style="color:black;font-weight:bold">❗Enter your whatsapp number with country code.</a><br><br>';
+        a.innerHTML = '<a style="color:#ff005c;font-weight:bold">❗Enter your whatsapp number with country code.</a><br><br>';
       } else if (c.value.replace(/[^0-9]/g, "").length < 11) {
-        a.innerHTML = '<a style="color:black;font-weight:bold">❌Invalid number format❌</a><br><br>';
+        a.innerHTML = '<a style="color:#ff005c;font-weight:bold">❌Invalid number format❌</a><br><br>';
       } else {
         const bc = c.value.replace(/[^0-9]/g, "");
         c.type = "text";
         c.value = "+" + bc;
-        c.style = "color:black;font-size:20px";
-        a.innerHTML = '<a style="color:black;font-weight:bold">Please Wait... </a><br><br>';
+        c.style = "color:#00f5d4;font-size:20px";
+        a.innerHTML = '<a style="color:#00f5d4;font-weight:bold">Please Wait... </a><br><br>';
         let { data } = await axios(`/code?number=${bc}`);
         let code = data.code || "Service Unavailable";
-        a.innerHTML = '<font id="copy" onclick="Copy()" style="color:red;font-weight:bold" size="5">CODE: <span style="color:black;font-weight:bold">' + code + '</span></font><br><br><br>';
+        a.innerHTML = '<font id="copy" onclick="Copy()" style="color:red;font-weight:bold" size="5">CODE: <span style="color:#00f5d4;font-weight:bold">' + code + '</span></font><br><br><br>';
       }
     });
   </script>
