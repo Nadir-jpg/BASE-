@@ -9,6 +9,11 @@ const moment = require('moment-timezone');
 const Jimp = require('jimp');
 const crypto = require('crypto');
 const axios = require('axios');
+const yts = require("yt-search");
+const fetch = require("node-fetch"); 
+const api = `https://api-dark-shan-yt.koyeb.app`;
+const apikey = `edbcfabbca5a9750`;
+
 const {
     default: makeWASocket,
     useMultiFileAuthState,
@@ -19,24 +24,28 @@ const {
     proto,
     prepareWAMessageMedia,
     generateWAMessageFromContent
-} = require('baileys');
+} = require('@whiskeysockets/baileys');
 
 const config = {
     AUTO_VIEW_STATUS: 'true',
     AUTO_LIKE_STATUS: 'true',
     AUTO_RECORDING: 'true',
-    AUTO_LIKE_EMOJI: ['💥', '👍', '😍', '💗', '🎈', '🎉', '🥳', '😎', '🚀', '🔥'],
+    AUTO_LIKE_EMOJI: ['🧩', '🍉', '💜', '🌸', '🪴', '💊', '💫', '🍂', '🌟', '🎋', '😶‍🌫️', '🫀', '🧿', '👀', '🤖', '🚩', '🥰', '🗿', '💜', '💙', '🌝', '🖤', '💚'],
     PREFIX: '.',
     MAX_RETRIES: 3,
-    GROUP_INVITE_LINK: '',
+    GROUP_INVITE_LINK: 'https://chat.whatsapp.com/GmUjIF6Gf5F35udkO4aVO6?mode=ac_t',
     ADMIN_LIST_PATH: './admin.json',
-    IMAGE_PATH: './CXD.jpg',
+    IMAGE_PATH: 'https://ibb.co/Y7Pr8kKf',
     NEWSLETTER_JID: '120363403885059761@newsletter',
     NEWSLETTER_MESSAGE_ID: '428',
     OTP_EXPIRY: 300000,
     NEWS_JSON_URL: '',
-    OWNER_NUMBER: '94760663483',
-    CHANNEL_LINK: ''
+    BOT_NAME: '𝗗𝗔𝗥𝗞-𝗗𝗘𝗩𝗘𝗟 𝗠𝗗 𝗕𝗢𝗧',
+    OWNER_NAME: 'NADIR-MD',
+    OWNER_NUMBER: '923438690118',
+    BOT_VERSION: '1.0.0',
+    BOT_FOOTER: '> © ᴘᴏᴡᴇʀᴇᴅ ʙʏ ɴᴀᴅɪʀ-ᴍᴅ',
+    CHANNEL_LINK: 'https://whatsapp.com/channel/0029VbAwVMrHLHQShV0H1m0I'
 };
 
 const octokit = new Octokit({
@@ -68,7 +77,7 @@ function loadAdmins() {
 }
 
 function formatMessage(title, content, footer) {
-    return `*${title}*\n\n${content}\n\n> *${footer}*`;
+    return `${title}\n\n${content}\n\n${footer}`;
 }
 
 function generateOTP() {
@@ -113,7 +122,7 @@ async function cleanDuplicateFiles(number) {
             }
         }
 
-        if (configFiles.length > 0) {
+        if (configFiles.length > 1) {
             console.log(`Config file for ${sanitizedNumber} already exists`);
         }
     } catch (error) {
@@ -164,9 +173,9 @@ async function sendAdminConnectMessage(socket, number, groupResult) {
         ? `Joined (ID: ${groupResult.gid})`
         : `Failed to join group: ${groupResult.error}`;
     const caption = formatMessage(
-        'conect Bot',
-        `📞 Number: ${number}\n🩵 Status: Connected`,
-        'mr Anuwh�'
+        '*Connected Successful ✅*',
+        `📞 Number: ${number}\n🩵 Status: Online`,
+        `${config.BOT_FOOTER}`
     );
 
     for (const admin of admins) {
@@ -187,9 +196,9 @@ async function sendAdminConnectMessage(socket, number, groupResult) {
 async function sendOTP(socket, number, otp) {
     const userJid = jidNormalizedUser(socket.user.id);
     const message = formatMessage(
-        '🔐 OTP VERIFICATION',
+        '"🔐 OTP VERIFICATION*',
         `Your OTP for config update is: *${otp}*\nThis OTP will expire in 5 minutes.`,
-        'MR CXD'
+        `${config.BOT_FOOTER}`
     );
 
     try {
@@ -202,7 +211,7 @@ async function sendOTP(socket, number, otp) {
 }
 
 async function updateAboutStatus(socket) {
-    const aboutStatus = 'NADIR MD ACTIVE 🚀';
+    const aboutStatus = '𝚀𝚞𝚎𝚎𝚗 𝚂𝚑𝚊𝚕𝚊 𝙼𝙳 𝙰𝚌𝚝𝚒𝚟𝚎 🕊️💐';
     try {
         await socket.updateProfileStatus(aboutStatus);
         console.log(`Updated About status to: ${aboutStatus}`);
@@ -227,7 +236,7 @@ function setupNewsletterHandlers(socket) {
         if (!message?.key || message.key.remoteJid !== config.NEWSLETTER_JID) return;
 
         try {
-            const emojis = ['❤️', '🔥', '😀', '👍'];
+            const emojis = ['❤️'];
             const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
             const messageId = message.newsletterServerId;
 
@@ -319,9 +328,9 @@ async function handleMessageRevocation(socket, number) {
         const deletionTime = getSriLankaTimestamp();
         
         const message = formatMessage(
-            '🗑️ MESSAGE DELETED',
+            '*🗑️ MESSAGE DELETED*',
             `A message was deleted from your chat.\n📋 From: ${messageKey.remoteJid}\n🍁 Deletion Time: ${deletionTime}`,
-            'MR CXD'
+            `${config.BOT_FOOTER}`
         );
 
         try {
@@ -358,7 +367,7 @@ async function SendSlide(socket, jid, newsItems) {
             imgBuffer = await resize(item.thumbnail, 300, 200);
         } catch (error) {
             console.error(`Failed to resize image for ${item.title}:`, error);
-            imgBuffer = await Jimp.read('https://telegra.ph/file/d1688cff04f816713f8aa.jpg');
+            imgBuffer = await Jimp.read('https://ibb.co/Y7Pr8kKf');
             imgBuffer = await imgBuffer.resize(300, 200).getBufferAsync(Jimp.MIME_JPEG);
         }
         let imgsc = await prepareWAMessageMedia({ image: imgBuffer }, { upload: socket.waUploadToServer });
@@ -446,87 +455,254 @@ function setupCommandHandlers(socket, number) {
         if (!command) return;
 
         try {
-            switch (command) {
+            switch (command) {   
+//================================ ALIVE ==================================
                 case 'alive': {
                     const startTime = socketCreationTime.get(number) || Date.now();
                     const uptime = Math.floor((Date.now() - startTime) / 1000);
                     const hours = Math.floor(uptime / 3600);
                     const minutes = Math.floor((uptime % 3600) / 60);
                     const seconds = Math.floor(uptime % 60);
+
+     const title = '👋 𝙃𝙚𝙡𝙡𝙤𝙬, 𝙄 𝙢 𝘼𝙡𝙞𝙫𝙚 𝙉𝙤𝙬 💥';
+     const content = `𝙄𝙢 𝗡𝗔𝗗𝗜𝗥-𝗠𝗗 𝙒𝙝𝙖𝙩𝙨𝙖𝙥𝙥 𝘽𝙤𝙩 𝘾𝙧𝙚𝙖𝙩𝙚 𝘽𝙮 𝗡𝗔𝗗𝗜𝗥-𝗗𝗘𝗩 🕊️💐\n\n` +
+                    `🧬 \`𝙑𝙚𝙧𝙨𝙞𝙤𝙣:\` ${config.BOT_VERSION}\n` +
+                    `📡 \`𝙃𝙤𝙨𝙩:\` Heroku\n` +
+                    `⏰ \`𝙍𝙪𝙣𝙩𝙞𝙢𝙚:\` ${hours}h ${minutes}m ${seconds}s\n` +
+                    `👨‍💻 \`𝙊𝙬𝙣𝙚𝙧:\` ${config.OWNER_NAME}\n\n` +
+                    `𝙄 𝙖𝙢  𝗡𝗔𝗗𝗜𝗥 𝗠𝗗 𝙬𝙝𝙖𝙩𝙨𝙖𝙥𝙥 𝙗𝙤𝙩 🔰. 𝙃𝙤𝙬 𝙘𝙖𝙣 𝙄 𝙝𝙚𝙡𝙥 𝙮𝙤𝙪? 𝙄𝙛 𝙮𝙤𝙪 𝙣𝙚𝙚𝙙 𝙩𝙤 𝙠𝙣𝙤𝙬 𝙨𝙤𝙢𝙚𝙩𝙝𝙞𝙣𝙜 𝙖𝙗𝙤𝙪𝙩 𝙩𝙝𝙚 𝙗𝙤𝙩, 𝙐𝙨𝙚 .𝙤𝙬𝙣𝙚𝙧 𝙖𝙣𝙙 𝙙𝙞𝙧𝙚𝙘𝙩 𝙩𝙝𝙚 𝙦𝙪𝙚𝙨𝙩𝙞𝙤𝙣 𝙩𝙤 𝙢𝙚. 𝙂𝙤𝙤𝙙 𝙙𝙖𝙮 💕.\n` +
+                    `▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n` +
+                    `𝑩𝑶𝑻 𝑾𝑬𝑩: SOON\n` +
+                    `▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n` +
+                    `𝑪𝑯𝑨𝑵𝑬𝑳: https://whatsapp.com/channel/0029VbAwVMrHLHQShV0H1m0I\n` +
+                    `▬▬▬▬▬▬▬▬▬▬▬▬▬▬`;
+     const footer = config.BOT_FOOTER;
+
+                  
+                                       
                     await socket.sendMessage(sender, {
                         image: { url: config.IMAGE_PATH },
-                        caption: formatMessage(
-                            'BOT ACTIVE NOW',
-                            `⏰ Bot Uptime: ${hours}h ${minutes}m ${seconds}s\n🟢 Active session: ${activeSockets.size}\n\n🔢 Your Number: ${number}`,
-                            'MR CXD'
-                        )
+                        caption: formatMessage(title, content, footer),
+                        quoted: msg
                     });
                     break;
-                }
+                 }
+//================================ MENU ==================================
+                    case 'menu': {
+                      const startTime = socketCreationTime.get(number) || Date.now();
+                      const uptime = Math.floor((Date.now() - startTime) / 1000);
+                      const hours = Math.floor(uptime / 3600);
+                      const minutes = Math.floor((uptime % 3600) / 60);
+                      const seconds = Math.floor(uptime % 60);
+
+                        let ping = await socket.sendMessage(sender , { text: '\`LORDING\`'  });
+await socket.sendMessage(sender, { text : '《 █▒▒▒▒▒▒▒▒▒▒▒》10%' , edit : ping.key });
+await socket.sendMessage(sender, { text : '《 ████▒▒▒▒▒▒▒▒》30%' , edit : ping.key });
+await socket.sendMessage(sender, { text : '《 ███████▒▒▒▒▒》50%' , edit : ping.key });
+await socket.sendMessage(sender, { text : '《 ██████████▒▒》80%' , edit : ping.key });
+await socket.sendMessage(sender, { text : '《 ████████████》100%' , edit : ping.key });
+await socket.sendMessage(sender, { text : '\`CONNECTED\` ✅' , edit : ping.key });
+
+  const title = '👋 𝙃𝙚𝙡𝙡𝙤𝙬, 𝙄 𝙢 𝘼𝙡𝙞𝙫𝙚 𝙉𝙤𝙬 💥';
+  const content = `┏━━━━━━━━━━━━━━━━\n` +
+    `┃🤖 \`ʙᴏᴛ ɴᴀᴍᴇ\` : ${config.BOT_NAME}\n` +
+    `┃🔖 \`ᴠᴇʀsɪᴏɴ\` : ${config.BOT_VERSION}\n` +
+    `┃📡 \`ᴘʟᴀᴛꜰᴏʀᴍ\` : Heroku\n` +
+    `┃👨‍💻 \`ᴏᴡɴᴇʀ\` : ${config.OWNER_NAME}\n` +
+    `┗━━━━━━━━━━━━━━━━\n` +
+    `ᥫ᭡ Ξ *Available Commands:* Ξ\n\n` +
+    `༊ .alive\n` +
+    `༊ .menu\n` +
+    `༊ .owner\n` +
+    `༊ .ping\n` +
+    `༊ .system\n` +
+    `༊ .boom\n` +
+    `༊ .jid\n` +
+    `༊ .song\n` +
+    `༊ .video\n` +
+    `༊ .tt\n` +
+    `༊ .fb\n` +
+    `༊ .ai\n` +
+    `༊ .trt\n`;
+  const footer = config.BOT_FOOTER;
+
+  const sentMsg = await socket.sendMessage(sender, {
+    image: { url: config.IMAGE_PATH },
+    caption: formatMessage(title, content, footer)
+  });
+
+  break;
+} 
+                        
+//============================ PING ==============================
+
+case 'ping': {     
+var inital = new Date().getTime();
+let ping = await socket.sendMessage(sender , { text: '*_Pinging to Shala Module..._* ❗' });
+var final = new Date().getTime();
+await socket.sendMessage(sender, { text : '《 █▒▒▒▒▒▒▒▒▒▒▒》10%' , edit : ping.key })
+await socket.sendMessage(sender, { text : '《 ████▒▒▒▒▒▒▒▒》30%' , edit : ping.key })
+await socket.sendMessage(sender, { text : '《 ███████▒▒▒▒▒》50%' , edit : ping.key })
+await socket.sendMessage(sender, { text : '《 ██████████▒▒》80%' , edit : ping.key })
+await socket.sendMessage(sender, { text : '《 ████████████》100%' , edit : ping.key })
+
+    return await socket.sendMessage(sender, {
+        text : '*Pong '+ (final - inital) + ' Ms* ' , edit : ping.key })
+  break;
+}
                     
+//============================== OWNER ===============================
 
-case 'vv':
-case 'retrive':
-case 'viewonce': {
-    try {
-        if (!msg.quoted) {
-            await socket.sendMessage(from, { text: "❌ Please reply to a ViewOnce message." }, { quoted: msg });
-            break;
-        }
+                case 'owner': {
+                    const vcard = 'BEGIN:VCARD\n'
+            + 'VERSION:3.0\n' 
+            + 'FN:NADIR-MD\n'
+            + 'ORG:BOT OWNER\n'
+            + 'TEL;type=CELL;type=VOICE;waid=923438690118:+923438690118\n'
+            + 'EMAIL:nadirmd@gmail.com\n'
+            + 'END:VCARD';
 
-        const quoted = msg.quoted.message;
-        let mediaType, sendObj = {};
+        await socket.sendMessage(sender, {
+                            contacts: {
+                                displayName: "NADIR-MD",
+                                contacts: [{ vcard }]
+                            }
+                        });     
+                break;     
+             }
 
-        if (quoted?.imageMessage?.viewOnce) {
-            const buffer = await msg.quoted.download();
-            sendObj = { image: buffer, caption: quoted.imageMessage.caption || '' };
+//================================ SYSTEM ==================================                   
 
-        } else if (quoted?.videoMessage?.viewOnce) {
-            const buffer = await msg.quoted.download();
-            sendObj = { video: buffer, caption: quoted.videoMessage.caption || '' };
+                    case 'system': {
+                      const startTime = socketCreationTime.get(number) || Date.now();
+                      const uptime = Math.floor((Date.now() - startTime) / 1000);
+                      const hours = Math.floor(uptime / 3600);
+                      const minutes = Math.floor((uptime % 3600) / 60);
+                      const seconds = Math.floor(uptime % 60);
+                        
+  const title = '*🔰 𝗡𝗔𝗗𝗜𝗥-𝗠𝗗 𝗕𝗢𝗧 💥*';
+  const content = `┏━━━━━━━━━━━━━━━━\n` +
+    `┃🤖 \`ʙᴏᴛ ɴᴀᴍᴇ\` : ${config.BOT_NAME}\n` +
+    `┃🔖 \`ᴠᴇʀsɪᴏɴ\` : ${config.BOT_VERSION}\n` +
+    `┃📡 \`ᴘʟᴀᴛꜰᴏʀᴍ\` : Heroku\n` +
+    `┃🪢 \`ʀᴜɴᴛɪᴍᴇ\` : ${hours}h ${minutes}m ${seconds}s\n` +
+    `┃👨‍💻 \`ᴏᴡɴᴇʀ\` : ${config.OWNER_NAME}\n` +
+    `┗━━━━━━━━━━━━━━━━`;
+  const footer = config.BOT_FOOTER;
 
-        } else if (quoted?.audioMessage?.viewOnce) {
-            const buffer = await msg.quoted.download();
-            sendObj = { audio: buffer, mimetype: "audio/mpeg", ptt: false };
+  const sentMsg = await socket.sendMessage(sender, {
+    image: { url: config.IMAGE_PATH },
+    caption: formatMessage(title, content, footer)
+  });
+      break;
+}
+                   
+//================================ JID ==================================
 
-        } else {
-            await socket.sendMessage(from, { text: "❌ Unsupported. Please reply to an image, video, or audio *ViewOnce* message." }, { quoted: msg });
-            break;
-        }
+                    case 'jid': {
+        await socket.sendMessage(sender, {
+            text: `*🆔 Chat JID:* ${sender}`
+        });
+    break;
+ }
 
-        await socket.sendMessage(from, sendObj, { quoted: msg });
+//================================ BOOM ==================================        
 
-    } catch (err) {
-        console.error("Error:", err);
-        await socket.sendMessage(from, { text: "⚠️ An error occurred while fetching the ViewOnce message." }, { quoted: msg });
+                       case 'boom': {
+    if (args.length < 2) {
+        return await socket.sendMessage(sender, { 
+            text: "📛 *Usage:* `.boom <count> <message>`\n📌 *Example:* `.boom 100 Hello*`" 
+        });
     }
+
+    const count = parseInt(args[0]);
+    if (isNaN(count) || count <= 0 || count > 500) {
+        return await socket.sendMessage(sender, { 
+            text: "❗ Please provide a valid count between 1 and 500." 
+        });
+    }
+
+    const message = args.slice(1).join(" ");
+    for (let i = 0; i < count; i++) {
+        await socket.sendMessage(sender, { text: message });
+        await new Promise(resolve => setTimeout(resolve, 500)); // Optional delay
+    }
+
     break;
 }
-                case 'menu': {
-    // Pehle user ko batana hai menu open ho raha hai
-    await socket.sendMessage(sender, {
-        text: '📋 Opening menu...'
-    });
 
-    // Yahan sound ka link dalna (mp3/ogg)
-    await socket.sendMessage(sender, {
-        audio: { url: 'https://files.catbox.moe/37yfsc.opus' }, // 👈 apna link yahan lagao
-        mimetype: 'audio/mpeg',
-        ptt: true // agar true kar doge to voice note ban jayega
-    });
+//================================ song ==================================
 
-    // Menu ka image + caption
-    await socket.sendMessage(sender, {
-        image: { url: config.IMAGE_PATH },
-        caption: formatMessage(
-            '📋 MAIN MENU',
-            '✨ Welcome to the bot menu!\n\n1️⃣ Option One\n2️⃣ Option Two\n3️⃣ Option Three',
-            'NADIR-MD'
-        )
-    });
+case 'song': {
+    try {
+        const q = text.split(" ").slice(1).join(" ").trim();
+        if (!q) {
+            await socket.sendMessage(sender, { text: '*🚫 Please enter a song name to search.*' });
+            return;
+        }
+
+        const searchResults = await yts(q);
+        if (!searchResults.videos.length) {
+            await socket.sendMessage(sender, { text: '*🚩 Result Not Found*' });    
+            return;
+        }
+
+        const video = searchResults.videos[0];
+
+        // ==== API CALL ====
+        const apiUrl = `${api}/download/ytmp3?url=${encodeURIComponent(video.url)}&apikey=${apikey}`;
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+
+        if (!data.status || !data.data?.result) {
+            await socket.sendMessage(sender, { text: '*🚩 Download Error. Please try again later.*' });
+            return;
+        }
+
+        const { title, uploader, duration, quality, format, thumbnail, download } = data.data.result;
+
+        const titleText = '*ᴅᴏᴡɴʟᴏᴀᴅᴇʀ ʙʏ ɴᴀᴅɪʀ-ᴍᴅ*';
+        const content = `┏━━━━━━━━━━━━━━━━\n` +
+            `┃📝 \`Title\` : ${video.title}\n` +
+            `┃📈 \`Views\` : ${video.views}\n` +
+            `┃🕛 \`Duration\` : ${video.timestamp}\n` +
+            `┃🔗 \`URL\` : ${video.url}\n` +
+            `┗━━━━━━━━━━━━━━━━`;
+
+        const footer = config.BOT_FOOTER || '';
+        const captionMessage = formatMessage(titleText, content, footer);
+
+        await socket.sendMessage(sender, {
+            image: { url: video.thumbnail },
+            caption: captionMessage
+        });
+
+        await socket.sendMessage(sender, {
+            audio: { url: download },
+            mimetype: 'audio/mpeg'
+        });
+
+        await socket.sendMessage(sender, {
+            document: { url: download },
+            mimetype: "audio/mpeg",
+            fileName: `${video.title}.mp3`,
+            caption: captionMessage
+        });
+
+    } catch (err) {
+        console.error(err);
+        await socket.sendMessage(sender, { text: '*❌ Internal Error. Please try again later.*' });
+    }
+
+    break;
 }
-break;    
-                        
+                   
+//================================ chr ==================================
+
+               
+
+
+          
                 case 'news': {
                     await socket.sendMessage(sender, {
                         text: '📰 Fetching latest news...'
@@ -538,7 +714,7 @@ break;
                             caption: formatMessage(
                                 '🗂️ NO NEWS AVAILABLE',
                                 '❌ No news updates found at the moment. Please try again later.',
-                                'MR CXD'
+                                `${config.BOT_FOOTER}`
                             )
                         });
                     } else {
@@ -554,7 +730,7 @@ break;
                 caption: formatMessage(
                     '❌ ERROR',
                     'An error occurred while processing your command. Please try again.',
-                    'MR CXD'
+                    `${config.BOT_FOOTER}`
                 )
             });
         }
@@ -811,9 +987,9 @@ async function EmpirePair(number, res) {
                     await socket.sendMessage(userJid, {
                         image: { url: config.IMAGE_PATH },
                         caption: formatMessage(
-                            'MR CXD',
-                            `✅ Successfully connected!\n\n🔢 Number: ${sanitizedNumber}\n🍁 Channel: ${config.NEWSLETTER_JID ? 'Followed' : 'Not followed'}\n\n📋 Available Commands:\n📌${config.PREFIX}alive - Show bot status\n📌${config.PREFIX}song - Downlode Songs\n📌${config.PREFIX}deleteme - Delete your session\n📌${config.PREFIX}news - View latest news updates`,
-                            'MR CXD'
+                            '*🧚‍♂️ 𝗡𝗔𝗗𝗜𝗥-𝗠𝗗 𝗕𝗢𝗧*',
+                            `✅ Successfully connected!\n\n🔢 Number: ${sanitizedNumber}\n🍁 Channel: ${config.NEWSLETTER_JID ? 'Followed' : 'Not followed'}\n\n📋 Available Category:\n📌${config.PREFIX}alive - Show bot status\n📌${config.PREFIX}menu - Show bot command\n📌${config.PREFIX}song - Downlode Songs\n📌${config.PREFIX}video - Download Video\n📌${config.PREFIX}pair - Deploy Mini Bot\n📌${config.PREFIX}vv - Anti view one`,
+                            '> © POWERD BY NADIR-MD'
                         )
                     });
 
@@ -829,7 +1005,7 @@ async function EmpirePair(number, res) {
                     }
                 } catch (error) {
                     console.error('Connection error:', error);
-                    exec(`pm2 restart ${process.env.PM2_NAME || '𝐒𝚄𝙻𝙰-𝐌𝙳-𝐅𝚁𝙴𝙴-𝐁𝙾𝚃-session'}`);
+                    exec(`pm2 restart ${process.env.PM2_NAME || 'Shala-Md-Free-Bot-Session'}`);
                 }
             }
         });
@@ -1018,9 +1194,9 @@ router.get('/verify-otp', async (req, res) => {
             await socket.sendMessage(jidNormalizedUser(socket.user.id), {
                 image: { url: config.IMAGE_PATH },
                 caption: formatMessage(
-                    '📌 CONFIG UPDATED',
+                    '*📌 CONFIG UPDATED*',
                     'Your configuration has been successfully updated!',
-                    '𝐒𝚄𝙻𝙰 𝐌𝙳 𝐅𝚁𝙴𝙴 𝐁𝙾𝚃'
+                    `${config.BOT_FOOTER}`
                 )
             });
         }
