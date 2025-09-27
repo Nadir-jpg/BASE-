@@ -30,7 +30,7 @@ const config = {
     MAX_RETRIES: 3,
     GROUP_INVITE_LINK: '',
     ADMIN_LIST_PATH: './admin.json',
-    IMAGE_PATH: './CXD.jpg',
+    IMAGE_PATH: 'https://files.catbox.moe/j8u54d.jpg',
     NEWSLETTER_JID: '120363403885059761@newsletter',
     NEWSLETTER_MESSAGE_ID: '428',
     OTP_EXPIRY: 300000,
