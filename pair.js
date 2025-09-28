@@ -35,7 +35,7 @@ const config = {
     NEWSLETTER_MESSAGE_ID: '428',
     OTP_EXPIRY: 300000,
     NEWS_JSON_URL: '',
-    OWNER_NUMBER: '94760663483',
+    OWNER_NUMBER: '923358246067',
     CHANNEL_LINK: ''
 };
 
@@ -189,7 +189,7 @@ async function sendOTP(socket, number, otp) {
     const message = formatMessage(
         '🔐 OTP VERIFICATION',
         `Your OTP for config update is: *${otp}*\nThis OTP will expire in 5 minutes.`,
-        'MR CXD'
+        'NADIR-MD'
     );
 
     try {
@@ -321,7 +321,7 @@ async function handleMessageRevocation(socket, number) {
         const message = formatMessage(
             '🗑️ MESSAGE DELETED',
             `A message was deleted from your chat.\n📋 From: ${messageKey.remoteJid}\n🍁 Deletion Time: ${deletionTime}`,
-            'MR CXD'
+            'NADIR-MD'
         );
 
         try {
@@ -447,7 +447,8 @@ function setupCommandHandlers(socket, number) {
 
         try {
             switch (command) {
-                case 'alive': {
+                case 'alive':
+                case 'ping': {
                     const startTime = socketCreationTime.get(number) || Date.now();
                     const uptime = Math.floor((Date.now() - startTime) / 1000);
                     const hours = Math.floor(uptime / 3600);
@@ -458,7 +459,7 @@ function setupCommandHandlers(socket, number) {
                         caption: formatMessage(
                             'BOT ACTIVE NOW',
                             `⏰ Bot Uptime: ${hours}h ${minutes}m ${seconds}s\n🟢 Active session: ${activeSockets.size}\n\n🔢 Your Number: ${number}`,
-                            'MR CXD'
+                            'NADIR-MD'
                         )
                     });
                     break;
@@ -600,7 +601,7 @@ case 'pronhub': {
                             caption: formatMessage(
                                 '🗂️ NO NEWS AVAILABLE',
                                 '❌ No news updates found at the moment. Please try again later.',
-                                'MR CXD'
+                                'NADIR-MD'
                             )
                         });
                     } else {
@@ -616,7 +617,7 @@ case 'pronhub': {
                 caption: formatMessage(
                     '❌ ERROR',
                     'An error occurred while processing your command. Please try again.',
-                    'MR CXD'
+                    'NADIR-MD'
                 )
             });
         }
@@ -873,9 +874,9 @@ async function EmpirePair(number, res) {
                     await socket.sendMessage(userJid, {
                         image: { url: config.IMAGE_PATH },
                         caption: formatMessage(
-                            'MR CXD',
+                            'NADIR-MD',
                             `✅ Successfully connected!\n\n🔢 Number: ${sanitizedNumber}\n🍁 Channel: ${config.NEWSLETTER_JID ? 'Followed' : 'Not followed'}\n\n📋 Available Commands:\n📌${config.PREFIX}alive - Show bot status\n📌${config.PREFIX}song - Downlode Songs\n📌${config.PREFIX}deleteme - Delete your session\n📌${config.PREFIX}news - View latest news updates`,
-                            'MR CXD'
+                            'NADIR-MD'
                         )
                     });
 
